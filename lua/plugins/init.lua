@@ -12,6 +12,11 @@ return {
       require "configs.lspconfig"
     end,
   },
+  -- { import = "plugins.aider" },
+  { import = "plugins.vimtex" },
+  { import = "plugins.augment" },
+  { import = "plugins.surround" },
+  { import = "plugins.arduino" },
 
   -- {
   -- 	"nvim-treesitter/nvim-treesitter",
