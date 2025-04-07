@@ -14,9 +14,11 @@ return {
   },
   -- { import = "plugins.aider" },
   { import = "plugins.vimtex" },
-  { import = "plugins.augment" },
+  -- { import = "plugins.augment" },
   { import = "plugins.surround" },
   { import = "plugins.arduino" },
+  { import = "plugins.qf" },
+  { import = "plugins.markdown" },
 
   -- {
   -- 	"nvim-treesitter/nvim-treesitter",
