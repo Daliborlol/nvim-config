@@ -31,6 +31,14 @@ lspconfig.intelephense.setup {
     }
   }
 }
+
+lspconfig.arduino_language_server.setup {
+  cmd = {
+    "arduino-language-server",
+    "-fqbn", "arduino:avr:uno", -- adjust for your board
+    "-cli", "arduino-cli", -- path to arduino-cli if not in PATH
+  }
+}
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
 --   on_attach = nvlsp.on_attach,
