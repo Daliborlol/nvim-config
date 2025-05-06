@@ -19,6 +19,7 @@ return {
   { import = "plugins.arduino" },
   { import = "plugins.qf" },
   { import = "plugins.markdown" },
+  { import = "plugins.lint" },
 
   -- {
   -- 	"nvim-treesitter/nvim-treesitter",
