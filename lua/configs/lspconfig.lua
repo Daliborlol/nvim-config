@@ -15,19 +15,58 @@ for _, lsp in ipairs(servers) do
     capabilities = nvlsp.capabilities,
   }
 end
+
+local get_intelephense_license = function ()
+    local f = assert(io.open(os.getenv("HOME") .. "/intelephense/license.txt", "rb"))
+    local content = f:read("*a")
+    f:close()
+    return string.gsub(content, "%s+", "")
+end
 lspconfig.intelephense.setup {
   on_attach = nvlsp.on_attach,
   on_init = nvlsp.on_init,
+  root_dir = function ()
+    return vim.loop.cwd()
+  end,
+  init_options = {
+    licenceKey = get_intelephense_license()
+  },
   capabilities = nvlsp.capabilities,
   settings = {
     intelephense = {
+      files = {
+        associations = {   -- glob patterns relative to workspace root
+          "**/*.php",
+          "**/*.phtml",
+          "**/*.inc",
+          "**/*.module",
+          "**/*.theme",
+          "**/*.install",
+        },
+        exclude = {
+          '**/dist/**',     -- ← ignore any “dist” folder
+          '**/.git/**',
+          '**/node_modules/**',
+          '**/vendor/**/.*/**',  -- usual extra exclusions
+        },
+        maxSize = 5000000
+      },
       environment = {
         includePaths = {
           "/home/dalibor/programming/apertia/autocrm",
           "/home/dalibor/programming/apertia/espocrm",
           "/home/dalibor/programming/apertia/PhpSpreadsheet"
         }
-      }
+      },
+      diagnostics = {
+        enable               = true,    -- global switch
+        undefinedTypes       = true,
+        undefinedFunctions   = true,
+        undefinedConstants   = true,
+        undefinedVariables   = true,
+        duplicateSymbols     = true,
+        unreachableCode      = true,
+      },
     }
   }
 }
