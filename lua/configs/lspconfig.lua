@@ -17,10 +17,13 @@ for _, lsp in ipairs(servers) do
 end
 
 local get_intelephense_license = function ()
-    local f = assert(io.open(os.getenv("HOME") .. "/intelephense/license.txt", "rb"))
-    local content = f:read("*a")
-    f:close()
-    return string.gsub(content, "%s+", "")
+  local f = io.open(os.getenv("HOME") .. "/intelephense/license.txt", "rb")
+  if not f then
+    return ""
+  end
+  local content = f:read("*a")
+  f:close()
+  return string.gsub(content, "%s+", "")
 end
 lspconfig.intelephense.setup {
   on_attach = nvlsp.on_attach,
