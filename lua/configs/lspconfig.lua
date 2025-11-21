@@ -4,8 +4,25 @@ require("nvchad.configs.lspconfig").defaults()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = { "html", "cssls", "pyright", "clangd", "ts_ls" }
+local servers = {
+  "html",
+  "cssls",
+  "pyright",
+  "clangd",
+  "ts_ls",
+  "rust_analyzer",
+  "texlab",
+  "jsonls",
+  "yamlls"
+}
+
 local nvlsp = require "nvchad.configs.lspconfig"
+
+-- local ensure_installed = vim.tbl_keys(servers or {})
+--       vim.list_extend(ensure_installed, {
+--         'stylua', -- Lua formatter
+--       })
+-- require('mason-lspconfig').setup { ensure_installed = ensure_installed }
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -47,7 +64,8 @@ lspconfig.intelephense.setup {
           "**/*.install",
         },
         exclude = {
-          '**/dist/**',     -- ← ignore any “dist” folder
+          '**/dist/**',     -- ← ignore any "dist" folder
+          '**/.dist/**',    -- ← ignore any ".dist" folder
           '**/.git/**',
           '**/node_modules/**',
           '**/vendor/**/.*/**',  -- usual extra exclusions
@@ -73,17 +91,18 @@ lspconfig.intelephense.setup {
     }
   }
 }
+print(require('configs.espocrm.jsonschema').getEspoSchema())
 
-lspconfig.arduino_language_server.setup {
-  cmd = {
-    "arduino-language-server",
-    "-fqbn", "arduino:avr:uno", -- adjust for your board
-    "-cli", "arduino-cli", -- path to arduino-cli if not in PATH
-  }
+lspconfig.jsonls.setup {
+  on_attach = nvlsp.on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  settings = {
+    json = {
+      schemas = require('schemastore').json.schemas {
+        extra = require('configs.espocrm.jsonschema').getEspoSchema(),
+      },
+      validate = { enable = true },
+    },
+  },
 }
--- configuring single server, example: typescript
--- lspconfig.ts_ls.setup {
---   on_attach = nvlsp.on_attach,
---   on_init = nvlsp.on_init,
---   capabilities = nvlsp.capabilities,
--- }

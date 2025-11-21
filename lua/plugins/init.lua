@@ -1,4 +1,14 @@
-return {
+local plugging = {
+  'harpoon',
+  'lint',
+  'rust',
+  'schemastore',
+  'vimtex',
+  'surround',
+  'qf',
+}
+
+local plugins = {
   {
     "stevearc/conform.nvim",
     -- event = 'BufWritePre', -- uncomment for format on save
@@ -12,14 +22,6 @@ return {
       require "configs.lspconfig"
     end,
   },
-  -- { import = "plugins.aider" },
-  { import = "plugins.vimtex" },
-  -- { import = "plugins.augment" },
-  { import = "plugins.surround" },
-  { import = "plugins.arduino" },
-  { import = "plugins.qf" },
-  { import = "plugins.markdown" },
-  { import = "plugins.lint" },
 
   -- {
   -- 	"nvim-treesitter/nvim-treesitter",
@@ -31,3 +33,10 @@ return {
   -- 	},
   -- },
 }
+
+-- Dynamically import plugins from plugging array
+for _, plugin_name in ipairs(plugging) do
+  table.insert(plugins, { import = "plugins.custom." .. plugin_name })
+end
+
+return plugins
